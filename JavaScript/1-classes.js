@@ -2,7 +2,13 @@
 
 class Expression {
   interpret(context) {
-    throw new Error('Abstract interpret() must be implemented');
+    const proto = Object.getPrototypeOf(this);
+    if (proto.constructor === Expression) {
+      throw new Error('Abstract interpret() must be implemented');
+    }
+    if (!context) {
+      throw new Error('Argument "context" must be passed');
+    }
   }
 }
 
@@ -13,6 +19,7 @@ class NumberExpression extends Expression {
   }
 
   interpret(context) {
+    super.interpret(context);
     return this.value;
   }
 }
@@ -24,6 +31,7 @@ class VariableExpression extends Expression {
   }
 
   interpret(context) {
+    super.interpret(context);
     return context[this.name];
   }
 }
